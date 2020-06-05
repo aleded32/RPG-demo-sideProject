@@ -2,14 +2,16 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "worldController.h"
+#include "player.h"
 
 //global variables
 
 sf::RenderWindow app(sf::VideoMode(320,320), "RPG in works");
 
-sf::Texture playerT;
+
 sf::Texture buildingT;
 sf::Texture floorT;
+sf::Texture empty;
 
 
 
@@ -21,14 +23,18 @@ int main()
 	//local variables
 	sf::Event e;
 	
-	SpriteLoader spriteloader;
 
+	Player player;
+	Player *pPlayer;
+	SpriteLoader spriteloader;
 	SpriteLoader *spriteLoader;
 	spriteLoader = &spriteloader;
-
+	pPlayer = &player;
 	
 	buildingT.loadFromFile("building1.png");
 	floorT.loadFromFile("floor.png");
+	empty.loadFromFile("empty.png");
+	
 
 	//gameloop
 	while(app.isOpen())
@@ -45,9 +51,12 @@ int main()
 
 		app.clear();
 	    
-		spriteLoader -> DrawWorld(app,playerT, buildingT,floorT);
-
-
+		
+		spriteLoader -> DrawWorld(app, floorT);
+		spriteLoader -> DrawBuildings(app, buildingT, empty);
+		
+		pPlayer -> playerMovement();
+		pPlayer -> DrawPlayer(app);
 		app.display();
 
 
